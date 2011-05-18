@@ -6,11 +6,17 @@ Puppet::Type.type(:mysql_database).provide :mysql, :parent => Puppet::Provider::
 	# Since puppet evaluates what provider to use at start time rather than run time
 	# we can't specify that commands will exist. Instead we call manually.
 	# I would make these call execute directly, but execpipe needs the path
-	def mysqladmin
+	def self.mysqladmin
 		'/usr/bin/mysqladmin'
 	end
-	def mysql
+	def self.mysql
 		'/usr/bin/mysql'
+	end
+	def mysqladmin
+		self.class.mysqladmin
+	end
+	def mysql
+		self.class.mysql
 	end
 
 	# retrieve the current set of mysql users
