@@ -14,14 +14,14 @@ Example usage:
 
 Available parameters:
 - *$ensure": defaults to present
-- *$database*: the target database
+- *$database*: the target database (optional)
 - *$user*: the target user
 - *$password*: user's password
 - *$host*: target host, default to "localhost"
 - *$priv*: target privileges, defaults to "all" (values are the fieldnames from mysql.db table).
 
 */
-define mysql::rights($database, $user, $password, $host="localhost", $ensure="present", $priv="all") {
+define mysql::rights($database = false, $user, $password, $host="localhost", $ensure="present", $priv="all") {
 
   if $mysql_exists == "true" and $ensure == "present" {
     if ! defined(Mysql_user ["${user}@${host}"]) {
@@ -31,7 +31,9 @@ define mysql::rights($database, $user, $password, $host="localhost", $ensure="pr
       }
     }
 
-    mysql_grant { "${user}@${host}/${database}":
+    $grant_name = $database ? { false => "${user}@${host}", default => "${user}@${host}/${database}" }
+
+    mysql_grant { $grant_name:
       privileges => $priv,
       require => File["/root/.my.cnf"],
     }
