@@ -2,6 +2,7 @@
 
 == Usage ==
 
+
 include mysql::server
 
 mysql::rights{"Set rights for puppet database":
