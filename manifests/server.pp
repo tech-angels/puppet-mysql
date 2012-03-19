@@ -189,7 +189,7 @@ class mysql::server {
 
   } else {
 
-    $mysql_password = generate("/usr/bin/pwgen", 8, 1)
+    $mysql_password = generate("/usr/bin/pwgen", 20, 1)
 
     file { "/root/.my.cnf":
       owner => root,
