@@ -5,7 +5,7 @@ class mysql::params {
     default => "/etc/mysql/my.cnf",
   }
 
-  $mycnfctx = "/files/${mycnf}"
+  $mycnfctx = "/files${mycnf}"
 
   $data_dir = $mysql_data_dir ? {
     "" => "/var/lib/mysql",
