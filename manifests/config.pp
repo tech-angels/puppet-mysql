@@ -33,12 +33,10 @@ define mysql::config (
   case $ensure {
     present: {
       $changes = "set ${key} ${value}"
-      $onlyif = "size == 0"
     }
 
     absent: {
       $changes = "rm ${key}"
-      $onlyif = "size > 0"
     }
 
     default: { err ( "unknown ensure value ${ensure}" ) }
@@ -50,7 +48,6 @@ define mysql::config (
       "set . ${section}",
       $changes,
       ],
-    onlyif    => "match ${key}[.='${value}'] ${onlyif}",
     require   => [ File["${mysql::params::mycnf}"],
                    File["${mysql::params::data_dir}"] ],
     notify    => Service["mysql"],
