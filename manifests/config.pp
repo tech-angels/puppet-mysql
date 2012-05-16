@@ -45,7 +45,7 @@ define mysql::config (
   augeas { "my.cnf/${section}/${key}":
     context   => "${mysql::params::mycnfctx}/target[.='${section}']",
     changes   => [
-      "set . ${section}",
+      "set ${mysql::params::mycnfctx}/target[.='${section}'] ${section}",
       $changes,
       ],
     require   => [ File["${mysql::params::mycnf}"],
