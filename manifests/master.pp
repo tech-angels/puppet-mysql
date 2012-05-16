@@ -1,12 +1,23 @@
 class mysql::master inherits mysql::server {
 
-  Augeas["my.cnf/replication"] {
-    changes => [
-      "set log-bin mysql-bin",
-      "set server-id ${mysql_serverid}",
-      "set expire_logs_days 7",
-      "set max_binlog_size 100M"
-    ],
+  Mysql::Config['log-bin'] {
+    ensure => 'present',
+    value  => 'mysql-bin',
+  }
+
+  Mysql::Config['server-id'] {
+    ensure => 'present',
+    value  => ${mysql_serverid},
+  }
+
+  Mysql::Config['expire_logs_days'] {
+    ensure => 'present',
+    value  => '7',
+  }
+
+  Mysql::Config['max_binlog_size'] [
+    ensure => 'present',
+    value  => '100M',
   }
 
 }
