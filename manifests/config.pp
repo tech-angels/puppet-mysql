@@ -47,6 +47,7 @@ define mysql::config (
     changes   => [
       "set ${mysql::params::mycnfctx}/target[.='${section}'] ${section}",
       $changes,
+      "rm ${mysql::params::mycnfctx}/target[count(*)=0]",
       ],
     require   => [ File["${mysql::params::mycnf}"],
                    File["${mysql::params::data_dir}"] ],
