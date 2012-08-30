@@ -29,6 +29,9 @@ class mysql::backup {
     $mysqldump_options = '--all-database --extended-insert'
   }
 
+  if !$mysql_post_backup_hook {
+    $mysql_post_backup_hook = ''
+  }
 
   $data_dir = $mysql::params::data_dir
   $backup_dir = $mysql::params::backup_dir
