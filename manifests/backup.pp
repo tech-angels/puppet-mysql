@@ -14,6 +14,7 @@ Attributes:
 - $mysqldump_options: defines options passed to mysqldump command.
   Please refer to the manpage.
   Default value: '--all-database --extended-insert'
+- $mysql_post_backup_hook: defines commands to be called after the backup is made, gzipped and moved to $backup_dir/mysql-$date.sql.gz, where $day is the day of the week.
 
 */
 class mysql::backup {
