@@ -29,9 +29,9 @@ if [ -e /usr/bin/mysqladmin ] && [ -e /usr/bin/mysqldump ]; then
     if /usr/bin/mysqladmin -s ping > /dev/null; then
       /usr/bin/mysqldump <%=mysqldump_options%> > $BKPDIR/mysql.sql && \
         nice -n 19 gzip -9 $BKPDIR/mysql.sql && \
-        mv -f $BKPDIR/mysql.sql.gz $BKPDIR/mysql-$DAY.sql.gz
-      exit $?
+        mv -f $BKPDIR/mysql.sql.gz $BKPDIR/mysql-$DAY.sql.gz || exit 1
       <%= mysql_post_backup_hook %>
+      exit $?
     else
       echo 'mysqld not running'
       exit 1
