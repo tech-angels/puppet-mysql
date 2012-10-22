@@ -1,25 +1,49 @@
 #!/bin/sh
 # file managed by puppet
 
+function usage {
+  echo "Usage: $0 (week|month [number]|year)"
+  exit 1
+}
+
+UNITKEEP=1
+PATH="/bin:/sbin:/usr/bin:/usr/sbin"
+MYDIR="<%= data_dir %>"
+BKPDIR="<%= backup_dir %>"
+
+if [ $# -gt 1 ]
+then
+  UNITKEEP=$2
+  if [[ $UNITKEEP == *[!0-9]* ]]; then
+    echo "Optionnal argument should be integer"
+    usage
+  fi
+fi
+
 case "$1" in
   week)
     DAY=$(date +%A |tr 'A-Z' 'a-z')
     ;;
   month)
     DAY=$(date +%d)
+    if [ $UNITKEEP -lt 1 -o $UNITKEEP -gt 12 ]; then
+       echo "Optionnal argument should be between 1 and 12 for month"
+       usage
+    fi
+    if [ $UNITKEEP -gt 1 ]; then
+       MONTH=$( date +%m )
+       SUBDIR=$( echo "${MONTH} % ${UNITKEEP}" | bc )
+       BKPDIR="${BKPDIR}/${SUBDIR}"
+       [ ! -d ${BKPDIR} ] && mkdir -p ${BKPDIR}
+    fi
     ;;
   year)
     DAY=$(date +%j)
     ;;
   *)
-    echo "Usage: $0 (week|month|year)"
-    exit 1
+    usage
     ;;
 esac
-
-PATH="/bin:/sbin:/usr/bin:/usr/sbin"
-MYDIR="<%= data_dir %>"
-BKPDIR="<%= backup_dir %>"
 
 # Installed ?
 if [ -e /usr/bin/mysqladmin ] && [ -e /usr/bin/mysqldump ]; then
