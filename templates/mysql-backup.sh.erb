@@ -51,7 +51,13 @@ if [ -e /usr/bin/mysqladmin ] && [ -e /usr/bin/mysqldump ]; then
   if [ -d $MYDIR ] && [ -n "$(find $MYDIR -maxdepth 1 -type d ! -iname mysql ! -iname test )" ]; then
     # Running ?
     if /usr/bin/mysqladmin -s ping > /dev/null; then
+<% if ( has_variable?('mysqldump_on_slave') and mysqldump_on_slave == true ) -%>
+      /usr/bin/mysqladmin stop-slave && \
+<% end -%>
       /usr/bin/mysqldump <%=mysqldump_options%> > $BKPDIR/mysql.sql && \
+<% if ( has_variable?('mysqldump_on_slave') and mysqldump_on_slave == true ) -%>
+      /usr/bin/mysqladmin start-slave && \
+<% end -%>
         nice -n 19 gzip -9 $BKPDIR/mysql.sql && \
         mv -f $BKPDIR/mysql.sql.gz $BKPDIR/mysql-$DAY.sql.gz || exit 1
       <%= mysql_post_backup_hook %>
