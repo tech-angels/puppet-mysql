@@ -12,7 +12,7 @@ class mysql::config::performance::small {
     'query_cache_size':                ensure => absent;
     'thread_concurrency':              ensure => absent;
     'thread_stack':                    value  => '64K';
-    'mysqld/max_allowed_packet':       value  => '16M';
+    'max_allowed_packet':              value  => '16M';
     'isamchk/key_buffer':              value  => '8M';
     'isamchk/sort_buffer_size':        value  => '8M';
     'isamchk/read_buffer':             ensure => absent;
