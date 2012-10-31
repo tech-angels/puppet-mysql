@@ -12,7 +12,6 @@ class mysql::config::performance::huge {
     'query_cache_size':                value  => '32M';
     'thread_concurrency':              value  => '8';
     'thread_stack':                    ensure => absent;
-    'max_allowed_packet':              value  => '16M';
     'isamchk/key_buffer':              value  => '256M';
     'isamchk/sort_buffer_size':        value  => '256M';
     'isamchk/read_buffer':             value  => '2M';

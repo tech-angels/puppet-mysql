@@ -13,7 +13,6 @@ class mysql::config::performance {
     'query_cache_size':                ensure => absent;
     'thread_concurrency':              ensure => absent;
     'thread_stack':                    ensure => absent;
-    'max_allowed_packet':              ensure => absent;
     'isamchk/key_buffer':              ensure => absent;
     'isamchk/sort_buffer_size':        ensure => absent;
     'isamchk/read_buffer':             ensure => absent;

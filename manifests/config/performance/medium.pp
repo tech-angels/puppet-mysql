@@ -12,7 +12,6 @@ class mysql::config::performance::medium {
     'query_cache_size':                ensure => absent;
     'thread_concurrency':              ensure => absent;
     'thread_stack':                    ensure => absent;
-    'max_allowed_packet':              value  => '16M';
     'isamchk/key_buffer':              value  => '20M';
     'isamchk/sort_buffer_size':        value  => '20M';
     'isamchk/read_buffer':             value  => '2M';
