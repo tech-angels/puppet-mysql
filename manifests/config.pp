@@ -40,22 +40,23 @@ define mysql::config (
 
   case $ensure {
     present: {
-      $changes = "set ${real_key} ${value}"
+      $changes = "set target[.='${section}']/${real_key} ${value}"
     }
 
     absent: {
-      $changes = "rm ${real_key}"
+      $changes = "rm target[.='${section}']/${real_key}"
     }
 
     default: { err ( "unknown ensure value ${ensure}" ) }
   }
 
   augeas { "my.cnf/${section}/${name}":
-    context   => "${mysql::params::mycnfctx}/target[.='${section}']",
+    incl      => $mysql::params::mycnf,
+    lens      => 'MySQL.lns',
     changes   => [
-      "set ${mysql::params::mycnfctx}/target[.='${section}'] ${section}",
+      "set target[.='${section}'] ${section}",
       $changes,
-      "rm ${mysql::params::mycnfctx}/target[count(*)=0]",
+      "rm target[count(*)=0]",
       ],
     require   => [ File["${mysql::params::mycnf}"],
                    File["${mysql::params::data_dir}"] ],
