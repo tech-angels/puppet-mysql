@@ -64,12 +64,11 @@ class mysql::server::base {
 
   if $mysql_password {
 
-    if $mysql_exists == "true" {
-      mysql_user { "${mysql_user}@localhost":
-        ensure => present,
-        password_hash => mysql_password($mysql_password),
-        require => Exec["Generate my.cnf"],
-      }
+    mysql_user { "${mysql_user}@localhost":
+      ensure        => present,
+      password_hash => mysql_password($mysql_password),
+      require       => File['/root/.my.cnf'],
+      alias         => 'mysql root',
     }
 
     file { "/root/.my.cnf":
