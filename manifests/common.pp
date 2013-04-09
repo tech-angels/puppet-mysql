@@ -9,6 +9,7 @@ class mysql::common {
 
   group { 'mysql-admin':
     ensure => present,
+    system => true,
   }
 
 }
