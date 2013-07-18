@@ -43,7 +43,7 @@ Puppet::Type.type(:mysql_user).provide :mysql, :parent => Puppet::Provider::Pack
 	end
 
 	def mysql_flush 
-		execute([mysqladmin, "flush-privileges"])
+		execute([mysqladmin, "flush-privileges"], {custom_environment: "HOME=/root"})
 	end
 
 	def query
@@ -67,18 +67,18 @@ Puppet::Type.type(:mysql_user).provide :mysql, :parent => Puppet::Provider::Pack
 		# http://bugs.mysql.com/bug.php?id=28331
 		# A workaround is to unconditionally drop the user and ignore the return value
 		execute([mysql, "mysql", "-e", "drop user '%s'" % [ @resource[:name].sub("@", "'@'") ]],
-				{:failonfail => false})
-		execute [mysql, "mysql", "-e", "create user '%s' identified by PASSWORD '%s'" % [ @resource[:name].sub("@", "'@'"), @resource.should(:password_hash) ]]
+				{:failonfail => false, :custom_environment => "HOME=/root"})
+		execute([mysql, "mysql", "-e", "create user '%s' identified by PASSWORD '%s'" % [ @resource[:name].sub("@", "'@'"), @resource.should(:password_hash) ]], {custom_environment: "HOME=/root"})
 		mysql_flush
 	end
 
 	def destroy
-		execute [mysql, "mysql", "-e", "drop user '%s'" % @resource[:name].sub("@", "'@'")]
+		execute([mysql, "mysql", "-e", "drop user '%s'" % @resource[:name].sub("@", "'@'")], {custom_environment: "HOME=/root"})
 		mysql_flush
 	end
 
 	def exists?
-		not execute([mysql, "mysql", "-NBe", "select '1' from user where CONCAT(user, '@', host) = '%s'" % @resource[:name]]).empty?
+		not execute([mysql, "mysql", "-NBe", "select '1' from user where CONCAT(user, '@', host) = '%s'" % @resource[:name]], {custom_environment: "HOME=/root"}).empty?
 	end
 
 	def password_hash
@@ -86,7 +86,7 @@ Puppet::Type.type(:mysql_user).provide :mysql, :parent => Puppet::Provider::Pack
 	end
 
 	def password_hash=(string)
-		execute [mysql, "mysql", "-e", "SET PASSWORD FOR '%s' = '%s'" % [ @resource[:name].sub("@", "'@'"), string ]]
+		execute([mysql, "mysql", "-e", "SET PASSWORD FOR '%s' = '%s'" % [ @resource[:name].sub("@", "'@'"), string ]], {custom_environment: "HOME=/root"})
 		mysql_flush
 	end
 end
