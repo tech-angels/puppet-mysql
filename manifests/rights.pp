@@ -23,11 +23,10 @@ Available parameters:
 */
 define mysql::rights($database = false, $user, $password, $host="localhost", $ensure="present", $priv="all") {
 
-  if $mysql_exists == "true" and $ensure == "present" {
+  if $ensure == "present" {
     if ! defined(Mysql_user ["${user}@${host}"]) {
       mysql_user { "${user}@${host}":
         password_hash => mysql_password($password),
-        require => File["/root/.my.cnf"],
       }
     }
 
@@ -35,7 +34,6 @@ define mysql::rights($database = false, $user, $password, $host="localhost", $en
 
     mysql_grant { $grant_name:
       privileges => $priv,
-      require => File["/root/.my.cnf"],
     }
   }
 
