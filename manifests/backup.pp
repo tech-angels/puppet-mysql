@@ -26,7 +26,7 @@ class mysql::backup {
     $mysqldump_retention = 'week'
   }
   if !$mysqldump_options {
-    $mysqldump_options = '--all-database --extended-insert'
+    $mysqldump_options = '--events --all-database --extended-insert'
   }
 
   if !$mysql_post_backup_hook {
