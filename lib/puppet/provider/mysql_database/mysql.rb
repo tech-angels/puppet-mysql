@@ -50,14 +50,14 @@ Puppet::Type.type(:mysql_database).provide :mysql, :parent => Puppet::Provider::
   end
 
   def create
-    execute([mysqladmin, "create", @resource[:name]], {custom_environment: "HOME=/root"})
+    execute([mysqladmin, "create", @resource[:name]], {custom_environment: {"HOME" => "/root"}})
   end
   def destroy
-    execute([mysqladmin, "-f", "drop", @resource[:name]], {custom_environment: "HOME=/root"})
+    execute([mysqladmin, "-f", "drop", @resource[:name]], {custom_environment: {"HOME" => "/root"}})
   end
 
   def exists?
-    if execute([mysql, "mysql", "-NBe", "show databases"], {custom_environment: "HOME=/root"}).match(/^#{@resource[:name]}$/)
+    if execute([mysql, "mysql", "-NBe", "show databases"], {custom_environment: {"HOME" => "/root"}}).match(/^#{@resource[:name]}$/)
       true
     else
       false
