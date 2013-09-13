@@ -9,7 +9,9 @@ class mysql::config::mysqld {
       /RedHat|Fedora|CentOS/ => '/var/log/mysqld.log',
       default                => '/var/log/mysql.err',
       };
-    'log-slow-queries':     value => $::operatingsystem ? {
+    'log-slow-queries':     ensure => absent;
+    'slow_query_log':       value => '1';
+    'slow_query_log_file':     value => $::operatingsystem ? {
       /RedHat|Fedora|CentOS/ => '/var/log/mysql-slow-queries.log',
       default                => '/var/log/mysql/mysql-slow.log',
       };
