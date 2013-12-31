@@ -13,7 +13,7 @@ Attributes:
   Default value: '/var/backups/mysql'
 - $mysqldump_options: defines options passed to mysqldump command.
   Please refer to the manpage.
-  Default value: '--all-database --extended-insert'
+  Default value: '--all-databases --extended-insert'
 - $mysql_post_backup_hook: defines commands to be called after the backup is made, gzipped and moved to $backup_dir/mysql-$date.sql.gz, where $day is the day of the week.
 
 */
@@ -26,7 +26,7 @@ class mysql::backup {
     $mysqldump_retention = 'week'
   }
   if !$mysqldump_options {
-    $mysqldump_options = '--events --all-database --extended-insert'
+    $mysqldump_options = '--events --all-databases --extended-insert'
   }
 
   if !$mysql_post_backup_hook {
