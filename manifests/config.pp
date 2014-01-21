@@ -30,9 +30,9 @@ define mysql::config (
     default => $key,
   }
 
-  $real_key = inline_template("<%= real_name.split('/')[-1] %>")
+  $real_key = inline_template("<%= @real_name.split('/')[-1] %>")
 
-  $section = inline_template("<%= if real_name.split('/')[-2]
+  $section = inline_template("<%= if @real_name.split('/')[-2]
       real_name.split('/')[-2]
     else
       'mysqld'
